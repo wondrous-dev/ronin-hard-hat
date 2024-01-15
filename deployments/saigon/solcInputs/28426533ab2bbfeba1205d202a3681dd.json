@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/BatchTransfer.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IERC1155 {\n    function safeTransferFrom(\n        address from,\n        address to,\n        uint256 id,\n        uint256 amount,\n        bytes calldata data\n    ) external;\n}\n\ninterface IERC20 {\n    function transferFrom(\n        address sender,\n        address recipient,\n        uint256 amount\n    ) external returns (bool);\n}\n\ninterface IERC721 {\n    function safeTransferFrom(\n        address from,\n        address to,\n        uint256 tokenId\n    ) external;\n}\n\ncontract BatchTransfer {\n\n    constructor() {}\n\n    function batchTransferERC1155(\n        address tokenAddress,\n        address[] calldata recipients,\n        uint256[] calldata tokenIds,\n        uint256[] calldata amounts\n    ) external {\n        require(\n            recipients.length == tokenIds.length &&\n            recipients.length == amounts.length,\n            \"Input lengths do not match\"\n        );\n\n        IERC1155 tokenContract = IERC1155(tokenAddress);\n\n        for (uint256 i = 0; i < recipients.length; i++) {\n            tokenContract.safeTransferFrom(\n                msg.sender,\n                recipients[i],\n                tokenIds[i],\n                amounts[i],\n                \"\"\n            );\n        }\n    }\n\n    function batchTransferERC721(\n        address tokenAddress,\n        address[] calldata recipients,\n        uint256[] calldata tokenIds\n    ) external {\n        require(\n            recipients.length == tokenIds.length,\n            \"Input lengths do not match\"\n        );\n\n        IERC721 tokenContract = IERC721(tokenAddress);\n\n        for (uint256 i = 0; i < recipients.length; i++) {\n            tokenContract.safeTransferFrom(\n                msg.sender,\n                recipients[i],\n                tokenIds[i]\n            );\n        }\n    }\n\n\n    function batchTransferERC20(\n        address tokenAddress,\n        address[] calldata recipients,\n        uint256[] calldata amounts\n    ) external {\n\n        IERC20 tokenContract = IERC20(tokenAddress);\n\n        for (uint256 i = 0; i < recipients.length; i++) {\n            tokenContract.transferFrom(\n                msg.sender,\n                recipients[i],\n                amounts[i]\n            );\n        }\n    }\n}"
+    }
+  },
+  "settings": {
+    "evmVersion": "paris",
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
