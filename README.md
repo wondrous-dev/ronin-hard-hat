@@ -1,8 +1,16 @@
-# Sample Hardhat Project
+# Wonderverse Ronin 
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Hardhat version of https://github.com/wondrous-dev/wonderverse-smart-contracts
 
-Try running some of the following tasks:
+## Proxy
+Openzeppelin delegate proxy contract
+
+## BatchTransfer
+Allows for batch transfer of ERC20, ERC721, and ERC1155 through approve/transfer proccess
+
+## CommunityBadge
+ERC1155 contract inspired by Opensea's OpenStore. Offchain allowlist. 
+
 
 ```shell
 npx hardhat help
